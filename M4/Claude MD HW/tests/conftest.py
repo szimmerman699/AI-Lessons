@@ -64,3 +64,19 @@ def whitespace_only_file(tmp_path):
     ws_file = tmp_path / "whitespace.txt"
     ws_file.write_text("   \n\n   \t\t   ", encoding="utf-8")
     return str(ws_file)
+
+
+@pytest.fixture
+def sample_markdown_file(tmp_path):
+    """Create a temporary markdown file with sample content.
+
+    Args:
+        tmp_path: Pytest's temporary directory fixture.
+
+    Returns:
+        Path to the temporary markdown file as a string.
+    """
+    md_file = tmp_path / "sample.md"
+    content = "# Sample Document\n\nThis is a **markdown** file.\n\n- Item 1\n- Item 2"
+    md_file.write_text(content, encoding="utf-8")
+    return str(md_file)

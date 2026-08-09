@@ -6,6 +6,7 @@ from typing import Dict, List, Optional
 
 import structlog
 
+from src.config import get_config
 from src.exceptions import (
     DocumentNotFoundError,
     FileSizeExceededError,
@@ -15,8 +16,6 @@ from src.exceptions import (
 from src.logging_config import get_logger
 
 logger = get_logger(__name__)
-
-MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB
 SUPPORTED_MIME_TYPES = {
     "application/pdf": ".pdf",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
@@ -61,19 +60,20 @@ def check_file_size(file_path: Path) -> None:
         file_path: Path to the document file.
 
     Raises:
-        FileSizeExceededError: If file exceeds MAX_FILE_SIZE.
+        FileSizeExceededError: If file exceeds configured size limit.
     """
+    config = get_config()
     file_size = file_path.stat().st_size
 
-    if file_size > MAX_FILE_SIZE:
+    if file_size > config.MAX_DOCUMENT_SIZE:
         logger.error(
             "file_size_exceeded",
             path=str(file_path),
             size_bytes=file_size,
-            limit_bytes=MAX_FILE_SIZE,
+            limit_bytes=config.MAX_DOCUMENT_SIZE,
         )
         raise FileSizeExceededError(
-            f"File exceeds size limit: {file_size} > {MAX_FILE_SIZE}"
+            f"File exceeds size limit: {file_size} > {config.MAX_DOCUMENT_SIZE}"
         )
 
 
