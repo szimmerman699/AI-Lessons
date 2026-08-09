@@ -165,6 +165,32 @@ class TestAnalyzeText:
         with pytest.raises(InvalidDocumentError):
             analyze_text("   \n\n   \t\t")
 
+    def test_analyze_text_word_frequency_basic(self) -> None:
+        """Test word frequency counts words correctly."""
+        content = "hello world hello"
+        result = analyze_text(content)
+
+        assert result["word_frequency"]["hello"] == 2
+        assert result["word_frequency"]["world"] == 1
+
+    def test_analyze_text_word_frequency_case_insensitive(self) -> None:
+        """Test word frequency is case-insensitive."""
+        content = "Hello HELLO hello"
+        result = analyze_text(content)
+
+        assert result["word_frequency"]["hello"] == 3
+        assert len(result["word_frequency"]) == 1
+
+    def test_analyze_text_word_frequency_excludes_punctuation(self) -> None:
+        """Test word frequency excludes punctuation."""
+        content = "Hello, world! Hello?"
+        result = analyze_text(content)
+
+        assert result["word_frequency"]["hello"] == 2
+        assert result["word_frequency"]["world"] == 1
+        assert "hello," not in result["word_frequency"]
+        assert "world!" not in result["word_frequency"]
+
 
 class TestReadCsvToData:
     """Tests for CSV file reading and data conversion."""

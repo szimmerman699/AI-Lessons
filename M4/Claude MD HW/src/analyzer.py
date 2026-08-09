@@ -1,6 +1,7 @@
 """Document analyzer - extract and process content from various document formats."""
 
 import os
+import re
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -122,7 +123,7 @@ def analyze_text(content: str) -> Dict[str, any]:
         content: Text content to analyze.
 
     Returns:
-        Dictionary with analysis results (word count, char count, etc.).
+        Dictionary with analysis results (word count, char count, word_frequency, etc.).
 
     Raises:
         InvalidDocumentError: If content is empty.
@@ -135,14 +136,27 @@ def analyze_text(content: str) -> Dict[str, any]:
     char_count = len(content)
     line_count = len(content.split("\n"))
 
+    words = re.findall(r"\w+", content.lower())
+    word_frequency: Dict[str, int] = {}
+    for word in words:
+        word_frequency[word] = word_frequency.get(word, 0) + 1
+
     result = {
         "word_count": word_count,
         "char_count": char_count,
         "line_count": line_count,
         "avg_word_length": round(char_count / word_count, 2) if word_count > 0 else 0,
+        "word_frequency": word_frequency,
     }
 
-    logger.info("text_analyzed", **result)
+    logger.info(
+        "text_analyzed",
+        word_count=word_count,
+        char_count=char_count,
+        line_count=line_count,
+        avg_word_length=result["avg_word_length"],
+        unique_words=len(word_frequency),
+    )
     return result
 
 
