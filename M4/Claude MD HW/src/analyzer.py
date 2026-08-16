@@ -3,7 +3,7 @@
 import os
 import re
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import structlog
 
@@ -116,7 +116,7 @@ def extract_text(file_path: str) -> str:
     return content
 
 
-def analyze_text(content: str) -> Dict[str, any]:
+def analyze_text(content: str) -> Dict[str, Any]:
     """Analyze extracted text and return metadata.
 
     Args:
@@ -160,7 +160,7 @@ def analyze_text(content: str) -> Dict[str, any]:
     return result
 
 
-def process_document(file_path: str) -> Dict[str, any]:
+def process_document(file_path: str) -> Dict[str, Any]:
     """Process a document end-to-end: validate, extract, analyze.
 
     Args:

@@ -67,6 +67,14 @@ Start a fresh Claude Code session in the starter project. Before making any requ
 
 Record: total tokens used, percentage of window, and the breakdown by component. Note how much of it is your CLAUDE.md and constraints.md - that is your fixed overhead on every session.
 
+25.1k/200k tokens (13%)
+Estimated usage by category
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ System prompt: 6.6k tokens (3.3%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ System tools: 15.7k tokens (7.9%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ Skills: 1.2k tokens (0.6%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ Messages: 1.7k tokens (0.8%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛶ Free space: 174.9k (87.4%)
+
 ### Step 2: Do a normal session's worth of work
 
 Make a handful of requests, mixing types the way a real working session does. Suggestions - adapt to what the starter actually contains:
@@ -92,10 +100,28 @@ Record the same numbers.
 
 In your homework notes, answer:
 
-- How much did total context grow, in tokens and as a percentage of the window?
+Context Usage
+     ⛁ ⛁ ⛁ ⛀ ⛁   Haiku 4.5
+     ⛁ ⛁ ⛶ ⛶ ⛶   claude-haiku-4-5-20251001
+     ⛶ ⛶ ⛶ ⛶ ⛶   46.1k/200k tokens (23%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ 
+     ⛶ ⛶ ⛶ ⛶ ⛶   Estimated usage by category
+                 ⛁ System prompt: 6.6k tokens 
+     (3.3%)
+                 ⛁ System tools: 15.7k tokens
+     (7.9%)
+                 ⛁ Skills: 1.2k tokens (0.6%)
+                 ⛁ Messages: 23.7k tokens (11.9%)
+                 ⛶ Free space: 152.8k (76.4%)
+
+- How much did total context grow, in tokens and as a percentage of the window? 
+It went up 20 tokens and 10%
 - **Which component grew the most?** This is the important one. It is usually the conversation - becuase tool results and file contents are consiedered conversation, even when you type little. A single large file read or a verbose command output can dwarf everything you typed.
+The messages went up the most (the only one that went up) 
 - Your CLAUDE.md is a fixed number of tokens. What share of the total window was it at the start, and what share at the end? That ratio is attention dilution made visible.
 - Run `/cost`. What did the session cost? Would you have guessed that number?
+Total cost:            $0.1446
+It's not a lot but it's not just $0.0001
 
 **What you are learning here:** the mechanism, not the symptom. You may well have seen no quality drop at all across those requests - that is a perfectly normal outcome and not a failed exercise. What you have measured is the thing that *causes* the symptom, and how fast it accumulates in ordinary work.
 
@@ -125,8 +151,21 @@ Be concrete. "Keep the type hints we added to `src/analyzer.py` and the decision
 
 Then run `/context` again - note how much the window dropped.
 
+ ⛁ ⛀ ⛁ ⛁ ⛁ ⛁ ⛁ ⛶ ⛶ ⛶   claude-haiku-4-5-20251001
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   34.5k/200k tokens (17%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶      
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   Estimated usage by category
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ System prompt: 6.6k tokens (3.3%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ System tools: 15.7k tokens (7.9%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ Skills: 1.2k tokens (0.6%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ Messages: 11k tokens (5.5%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛶ Free space: 165.5k (82.8%)
+
+It went down 5% and 10K tokens
+
 Now verify the preservation actually worked. Make a request that **depends on a fact you told it to keep**, and that would produce visibly wrong output if that fact were gone. Check the result.
 
+It ran the old tests that were there before and they passed.
 ---
 
 ## Part 3 - Fresh Sessions and the Briefing Template
@@ -147,6 +186,20 @@ Start a new session. Re-run one of the more substantial requests from Part 1, th
 Run `/context` in the fresh session. Compare against your end-of-session reading from Part 1. You are working on the same task with a small fraction of the tokens.
 
 Compare the outputs too. The fresh one may be better, or it may be indistinguishable - both are honest outcomes and neither invalidates the practice. The reliable win is the one on the instrument panel: same work, less context, lower cost, more headroom before dilution matters.
+
+ ⎿  Context Usage
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   Haiku 4.5
+     ⛁ ⛀ ⛁ ⛁ ⛁ ⛶ ⛶ ⛶ ⛶ ⛶   claude-haiku-4-5-20251001
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   29.3k/200k tokens (15%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ 
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   Estimated usage by category
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ System prompt: 6.6k tokens (3.3%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ System tools: 15.8k tokens (7.9%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ Skills: 1.2k tokens (0.6%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ Messages: 5.8k tokens (2.9%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛶ Free space: 170.6k (85.3%)
+    
+    Now it went down to 4K tokens higher than the original request.
 
 ### Step 9: Build the template
 

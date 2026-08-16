@@ -191,6 +191,61 @@ class TestAnalyzeText:
         assert "hello," not in result["word_frequency"]
         assert "world!" not in result["word_frequency"]
 
+    def test_analyze_text_return_structure(self) -> None:
+        """Test that analyze_text returns all required keys with correct types."""
+        content = "The quick brown fox jumps over the lazy dog"
+        result = analyze_text(content)
+
+        # Verify all required keys are present
+        required_keys = {
+            "word_count",
+            "char_count",
+            "line_count",
+            "avg_word_length",
+            "word_frequency",
+        }
+        assert set(result.keys()) == required_keys
+
+        # Verify correct types
+        assert isinstance(result["word_count"], int)
+        assert isinstance(result["char_count"], int)
+        assert isinstance(result["line_count"], int)
+        assert isinstance(result["avg_word_length"], float)
+        assert isinstance(result["word_frequency"], dict)
+
+        # Verify word_frequency contains strings as keys and ints as values
+        for key, value in result["word_frequency"].items():
+            assert isinstance(key, str)
+            assert isinstance(value, int)
+
+    def test_analyze_text_avg_word_length_calculation(self) -> None:
+        """Test correct calculation of average word length."""
+        # "hello world" = 11 chars (including space) / 2 words = 5.5
+        content = "hello world"
+        result = analyze_text(content)
+
+        assert result["avg_word_length"] == 5.5
+
+    def test_analyze_text_single_word(self) -> None:
+        """Test analysis of a single word."""
+        content = "hello"
+        result = analyze_text(content)
+
+        assert result["word_count"] == 1
+        assert result["char_count"] == 5
+        assert result["line_count"] == 1
+        assert result["avg_word_length"] == 5.0
+        assert result["word_frequency"]["hello"] == 1
+
+    def test_analyze_text_with_numbers(self) -> None:
+        """Test word frequency correctly handles numbers."""
+        content = "test123 hello 456 world"
+        result = analyze_text(content)
+
+        assert "test123" in result["word_frequency"]
+        assert "456" in result["word_frequency"]
+        assert result["word_count"] == 4
+
 
 class TestReadCsvToData:
     """Tests for CSV file reading and data conversion."""
