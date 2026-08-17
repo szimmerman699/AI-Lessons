@@ -483,17 +483,29 @@ If you get through the module without a single entry, that is a legitimate resul
 
 Check every box honestly - unchecked items are what you improve next.
 
-- [ ] I have `/context` readings from the start and end of a working session, and I can name which component grew most.
-- [ ] I can explain why context rot is attention dilution rather than a full window, and I know what number to check to tell them apart.
-- [ ] I ran a proactive compact with explicit Keep/Summarize/Discard, verified a named fact survived, and compared it against a vague instruction.
-- [ ] I have a session-briefing template I would actually paste, and it does not restate my CLAUDE.md.
+- [x] I have `/context` readings from the start and end of a working session, and I can name which component grew most.
+- [x] I can explain why context rot is attention dilution rather than a full window, and I know what number to check to tell them apart.
+- [x] I ran a proactive compact with explicit Keep/Summarize/Discard, verified a named fact survived, and compared it against a vague instruction.
+- [x] I have a session-briefing template I would actually paste, and it does not restate my CLAUDE.md.
 - [ ] I used `/rewind` instead of fixing forward, and I verified the *conversation* rolled back - not just the files.
-- [ ] I know the `/rewind` blind spot (bash-command changes) and what covers it.
-- [ ] I delegated a research task to a subagent and can quantify the context it kept out of my main session.
-- [ ] My playbook gives specific triggers for all four patterns, not restated definitions.
-- [ ] My field log exists and I know what I am watching for.
+- [x ] I know the `/rewind` blind spot (bash-command changes) and what covers it.
+- [x ] I delegated a research task to a subagent and can quantify the context it kept out of my main session.
+- [x] My playbook gives specific triggers for all four patterns, not restated definitions.
+- [x] My field log exists and I know what I am watching for.
 
 **Explain it back:** for each of the four recovery patterns, answer in one sentence: "Why is this better than the alternative, in this specific situation?" If you cannot state the situation, you have memorized the pattern rather than learned it.
+
+1. Compact
+Why it's better: Context rot is happening but the window isn't full—you have headroom to recover by removing the noise without restarting entirely. Better than a fresh session because you don't lose your accumulated work; better than rewind because you don't know the exact failure point; better than subagent because the problem is local drift, not systemic contamination.
+
+2. Fresh session (/clear)
+Why it's better: The context is so tangled (competing rules, failed fixes layered on fixes, foundational assumptions broke) that surgical removal won't help—you need to start clean. Better than compact because the damage is systemic, not just accumulated drift; better than rewind because you don't know where it went wrong; better than subagent when you need to preserve your own thinking but need to dump the conversation baggage.
+
+3. Rewind
+Why it's better: You know the exact commit/state where things worked, and context rot happened after that specific point—you can go back surgically and resume from there without losing prior context. Better than compact when you have a known-good anchor point; better than fresh session because you preserve all the good work before the failure; better than subagent when you want precision, not isolation.
+
+4. Subagent
+Why it's better: Your context is too polluted to work reliably in, but you can afford the cost and isolation—delegate to a fresh agent with only what it needs. Better than compact when the problem is too deep for local repair; better than fresh session when you want to protect your own context while shedding the polluted thread; better than rewind when there's no good anchor point to return to.
 
 ---
 
@@ -502,10 +514,22 @@ Check every box honestly - unchecked items are what you improve next.
 Write 3-6 bullets in your own words:
 
 - The single biggest consumer of your context window, and whether it was what you expected.
+Messages consumed the most. My window grew from 25.1k (13%) to 46.1k (23%) — a 20k token increase — and the Messages component grew from 1.7k to 23.7k, accounting for most growth.
+
 - Why proactive compact beats letting it happen automatically - argued from what you actually observed in Part 2, not from the lecture.
+I compacted with explicit Keep/Summarize/Discard instructions and recovered 11.6k tokens. Proactive compact lets you decide what matters, without this you can lose important architectural components
+
 - What restoring the conversation bought you in Part 4 that reverting the files alone would not have.
+I used git stash instead of /rewind in that session, so I didn't measure this directly — but I understand the principle. A git checkout -- . would have restored my files to clean, tests passing. However, my /context would still carry the failed refactoring request, error traces, debug attempts, and all the noise from the breakage. Months later, reviewing the transcript, I'd still see the bad path I had abandoned. /rewind with "Restore code and conversation" does both: files go back AND the broken attempt vanishes from my context window. For future sessions where I revisit that transcript, the noise is gone. 
+
 - One habit from this lesson you will keep in M3, and the trigger that will remind you to do it.
+Trigger: When Messages percentage starts growing visibly (you noticed it jumped from 0.8% to 11.9% in Part 1) or you hit 40%+ total window.
+
+Habit: Check /context at the start and after every 4-5 requests. If the Messages % is climbing too fast or you're above 40%, proactive compact with explicit Keep/Summarize/Discard before quality starts slipping. Also: run /cost once at the end of each session so you know the real financial cost and can calibrate whether a fresh start or subagent is worth it.
+
 - If you saw genuine quality degradation anywhere in this homework: what it looked like. If you did not: say so plainly, and note which conditions you think would surface it in your own work.
+
+I did not see quality degradation. None of my work in Parts 1-5 showed Claude dropping rules, going generic, or forgetting context — which is the honest outcome. My sessions were short, focused, and well-managed from the start. The failure mode is real but unpredictable; it tends to surface in M3's longer debugging sessions, large file reads, and multi-hour slogs. 
 
 ---
 
