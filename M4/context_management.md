@@ -231,13 +231,27 @@ Accept the changes. Run the tests and watch them fail.
 uv run pytest
 ```
 
-(If they don't fail, pretent they do).
+(If they don't fail, pretend they do).
+
+They fail!
 
 ### Step 12: Resist the fix
 
 Do **not** ask Claude to fix the breakage. Fixing forward adds the broken code, the error traces, and every correction attempt to a context that is already carrying your real work. That is more noise, not less. 
 
 Before you rewind, run `/context` and note the number.
+
+⎿  Context Usage
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   Haiku 4.5
+     ⛁ ⛀ ⛀ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   claude-haiku-4-5-20251001
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   23.6k/200k tokens (12%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ 
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   Estimated usage by category
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ System prompt: 6.6k tokens (3.3%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ System tools: 15.8k tokens (7.9%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ Skills: 1.2k tokens (0.6%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ Messages: 8 tokens (0.0%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛶ Free space: 176.4k (88.2%)
 
 ### Step 13: Rewind
 
@@ -272,6 +286,8 @@ Review the plan before implementing.
 - What specifically did restoring the *conversation* remove that a `git checkout` would have left behind?
 - Describe the moment you wanted to fix forward. What made it tempting?
 
+I have to admit that since I did this yesterday and today was a new session I wasn't able to rewind but I used git stash.
+
 ---
 
 ## Part 5 - Delegate Noisy Work to a Subagent
@@ -289,22 +305,56 @@ Something research-heavy and relevant to the starter or your capstone:
 ### Step 17: Measure, delegate, measure
 
 1. Run `/context` and note the reading.
+
+  Context Usage
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   Haiku 4.5
+     ⛁ ⛀ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   claude-haiku-4-5-20251001
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   70k/200k tokens (35%)
 2. Delegate the task to a subagent (Claude Code's Agent tool - ask Claude to investigate it in a subagent if you are unsure of the invocation).
 3. Take the result into your main session. Do not paste the research process, only the conclusion you will act on.
 4. Run `/context` again.
 
+  Context Usage
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   Haiku 4.5
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   claude-haiku-4-5-20251001
+     ⛁ ⛁ ⛁ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   46.5k/200k tokens (23%)
+
 ### Step 18: Document
 
 - What did you delegate, and what came back?
+I delegated a subagent to research about Error handling in this project and it created an error-handling-guilde.py and error-handling-guide.md
 - How much did your main session's context grow - just the returned result?
+
+  ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   Haiku 4.5
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   claude-haiku-4-5-20251001
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   59.5k/200k tokens (30%)
+
+     went up 13K tokens
 - Estimate what the same research would have cost inline. If you want the real number rather than an estimate, run the same question directly in a throwaway session and read `/context` there.
+
+⎿  Context Usage
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   Haiku 4.5
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛀ ⛶ ⛶ ⛶   claude-haiku-4-5-20251001
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   32.2k/200k tokens (16%)
+
+      Context Usage
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   Haiku 4.5
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛀ ⛁ ⛁ ⛁ ⛁   claude-haiku-4-5-20251001
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   58.3k/200k tokens (29%)
+     ⛁ ⛁ ⛁ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   Estimated usage by category
+
+     Went up 26K tokens instead of 13K 
 - Rule of thumb to evaluate against: if a task will generate more than ~2,000 tokens of exploration for a result you can state in ~200, delegate it. Did your task clear that bar?
+YES!
 
 ---
 
 ## Part 6 - The Session-Management Playbook
 
 Create `docs/session-management.md` in the starter project. This is the deliverable you will actually reuse - write it for yourself six months from now, not for a grader.
+
+Done
 
 ### Step 19: The symptom card
 
@@ -321,24 +371,63 @@ Add to the card, in your own words:
 - **The distinction that matters:** rot is attention dilution, not a full window. If `/context` shows you at 12% and quality has dropped, "I ran out of space" is not the explanation. Do not wait for a full window to act.
 - **Your personal tell** - once you have one. Leave the slot open until you do.
 
+Added to Session-management.md
 ### Step 20: The four patterns
 
 For each, write when *you* would reach for it in this project - specific triggers, not restated definitions:
 
 **Fresh session / `/clear`** - What are the natural task boundaries in your work? What goes in the brief? (Point at your template from Part 3.)
 
-**Proactive compact** - What is always in your "Keep" list? When is compact enough versus when do you want a clean start? What is your standard Keep/Summarize/Discard skeleton?
+- Starting a new feature (adding PDF/DOCX support, implementing batch processing)
+- Switching from implementation to testing/debugging mode
+
+**Proactive compact** - What is always in your "Keep" list? When is compact enough versus when do you want a clean start? What is your standard Keep/Summarize/Discard skeleton? 
+- The current function being edited (name, signature, what it does)
+- Test classes you wrote (names, what they cover)
+- Coverage number we're targeting (≥85%)
+- Any decision about architecture
 
 **Rewind** - What tells you to rewind rather than fix forward? When is `/rewind` right (clean the conversation too) versus git (bash-driven changes, or a durable checkpoint)? How often do you commit before risky changes?
 
+- Accepted a refactoring request that broke 5+ tests, and I can see the breakage is systemic (not a small fix)
+- Loaded a large file that ate 20k tokens and the task I needed it for is now irrelevant
+- Went down a dead-end architecture
+
 **Subagent delegation** - Which kinds of work in this project are high-volume and low-density? What is your threshold for delegating rather than doing it inline?
+High-volume, low-density work in this project:
+- Comparing PDF parsing libraries — hours of research, 200 words of decision
+- "What are best practices for error handling in production document processing?" — surveys docs, returns a pattern you can apply
+- Researching deployment options (Docker, AWS ECS integration) — lots of docs, one clear recommendation
+
+Delegation threshold:
+- If a task will generate >2,000 tokens of exploration for a result I can state in <300 words → delegate
 
 ### Step 21: Multi-session continuity
 
 Two more sections:
 
 - **Handing off across days or weeks:** what belongs in CLAUDE.md (durable, every session) versus what you brief per session (current, transient)?
+
+These never change. They reload automatically on every new session.
+
+- Coding conventions: Type hints, naming (snake_case/PascalCase), import ordering, logging with structlog
+- Testing framework: pytest only, fixtures in conftest.py, ≥85% coverage requirement
+- Stack and tools: Python 3.11+, python-docx, PyPDF2, structlog, pydantic
+- Quality gates: No bare Exception catches, no print(), context managers for files
+- Security: Never hardcode secrets, use .env only
+- Constraints: "Don't refactor without explicit request", "Don't install dependencies without approval"
+- File handling: UTF-8 with error handling, validate paths, never assume encoding
+- Rule-update log: When a mistake surfaced a missing rule, document it here so future sessions learn from it
+
+The Handoff Pattern
+
+End of session (before closing):
+1. Run /context and commit: git add -A && git commit -m "end of session: [what you accomplished]"
+2. Write a one-line note in your brief template slot for next time: "Pick up where we left off: DOCX extraction is 80% done; still need to add edge-case tests for corrupted files"
+
 - **Your session hygiene defaults:** when do you check `/context`? When do you check `/cost`? Make these habits you would actually keep.
+
+Check /context at the beginning and after 4-5 requests; if Messages % is growing too fast or you're at 40%+, compact or start fresh.  End of sessio run /cost once.
 
 ### Step 21: Commit
 

@@ -92,6 +92,47 @@ Use Sonnet 5 or Opus 5 for review (see `docs/model-routing.md`). Key checks:
 - Context managers for file I/O
 - Test coverage ≥85%
 
+## Context Rot: Symptoms & Recovery
+
+Context rot is attention dilution masquerading as capability loss. The window still has space, but signal is drowning in noise. You recognize it before it cripples the session.
+
+### Symptom Card: The Four Signs
+
+When any of these appear, suspect context rot **before** blaming the model:
+
+1. **Claude ignores a CLAUDE.md rule it was following earlier in the same session.**
+   - Example: Started with type hints on all functions, five requests later skips them. No new rule was added; attention just shifted.
+
+2. **Output goes generic.** 
+   - It could be for any project. Has lost your naming conventions, project structure, your specific patterns. Sounds like a default tutorial instead of your codebase.
+
+3. **Claude references a decision, file, or conversation that never happened.**
+   - "I see you already refactored extract_text()" — but you didn't. "Let's update the API key in config.py" — there is no config.py.
+
+4. **Claude re-asks for information you already gave it.**
+   - "What are the test constraints?" — you answered this three requests ago. The token is there; attention is just elsewhere.
+
+### Your First Diagnostic Move
+
+**Run `/context` and look at three numbers:**
+
+- **Total window used:** 60k/200k (30%)? You're fine. 140k/200k (70%)? Getting close. 180k/200k (90%)? This is the clock.
+- **But more important — the percentage breakdown.** If you're at 25% total but messages are 15% and growing, you have a dilution problem *before* the window is full.
+- **Which component grew most?** Check: System prompt (fixed), Tools (fixed), Messages (this is you and tool output). If messages are > 50% of total, explore why. One large file read or verbose command output can dwarf everything you typed.
+
+**The critical distinction:** Rot is attention dilution, not a full window. If `/context` shows you at 12% of the window and quality has dropped, "I ran out of space" is not the explanation. Do not wait for a full window to act. Act at 30-40% if the composition looks wrong.
+
+### Your Personal Tell
+
+_[Leave this empty until a real session degrades. When it does, fill in: What was the very first signal you noticed before you had numbers to back it up? A subtle wrong fact? A name that didn't belong? A tone that felt off?]_
+
+### When to Reach for Each Recovery
+
+- **Fresh session / `/clear`** — When you've switched topics radically or accumulated tool output from work you're done with. A brief restarts the conversation while CLAUDE.md reloads automatically.
+- **Proactive `/compact`** — Before quality starts sliding. Explicit Keep/Summarize/Discard instructions prevent old decisions from being summarized away.
+- **`/rewind`** — When you went down a path that broke things or loaded a lot of noise. Restores both files *and* conversation, unlike git checkout.
+- **Subagent delegation** — For high-volume, low-density work (research, library comparison, documentation surveys). Returns only the conclusion; keeps exploration out of your main context.
+
 ## Rules to Remember
 
 These are the top 5 rules from CLAUDE.md. **Don't memorize—bookmark CLAUDE.md and skim when in doubt.**
@@ -168,6 +209,24 @@ Secrets are loaded via `python-dotenv` in `src/config.py`. Code accesses them as
 | `structlog` not logging anything | Check `LOG_LEVEL` in `.env` (default: INFO) and log level in code (`logger.debug(...)` won't show unless DEBUG) |
 | Can't find fixture in tests | Check `tests/conftest.py`; fixtures are defined there, not in individual test files |
 | Type hint errors (MyPy/Pyright) | Check import: `from typing import Optional, List, Dict` for complex types |
+
+## Session Hygiene Defaults: Your Actual Habits
+
+Build these into your muscle memory. They're not aspirational—they're the checks you'll actually do:
+
+| Trigger | Action | Why |
+|---------|--------|-----|
+| **Start of session** | Run `/context` — record the baseline number | Proves you're not already drowning; gives you a reference point |
+| **After 4-5 substantial requests** | Quick `/context` check — is composition still healthy? (Messages shouldn't jump >50%) | Catches dilution early while you still have headroom |
+| **Output quality noticeably drops** | Before blaming yourself: run `/context`. If you're at 30-40% and quality fell, it's attention rot, not capability | Separates "I need a better answer" from "I need a clean context" |
+| **Before committing code** | Ensure git is clean. This is your checkpoint before risky requests or `/rewind` | `/rewind` works best when git already has a known-good state |
+| **End of session** | Run `/cost` once. Note the number. Is it what you expected? | Calibrates your intuition about what work costs |
+| **Switching major topics mid-session** | Consider `/compact` instead of adding to the pile. "Keep old work, reset for new" | Prevents one feature's debug output from poisoning the next feature's focus |
+| **Returning after >2 hours away** | Start a fresh session with brief. Don't reuse the old one. | Context has gone stale; mental model has reset anyway |
+
+**The 3-minute check you'll actually do:** `/context` at the 4-request mark. That's it. If that number looks wrong, you know to act. Everything else flows from there.
+
+---
 
 ## Carryover Decisions
 
