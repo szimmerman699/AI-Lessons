@@ -235,7 +235,6 @@ Domain terms: bge-small did better on WordPress and e-commerce terms (price tabl
 
 
 
-up to here 5/1
 
 
 ### Step 10: Add metadata-filtered queries
@@ -277,8 +276,17 @@ git commit -m "stage-3: embedding pipeline with dual vector store backends"
 After your dual-backend pipeline is working, explain in writing (3-5 sentences):
 
 1. Why cosine similarity is used instead of Euclidean distance for text embeddings
+
+Cosine similarity compares the direction of embedding vectors, which carries meaning, while Euclidean distance is also affected by vector length, which is mostly noise for text.
+
 2. What happens to your index if you change embedding models (can you query old vectors with a new model's embeddings?)
+
+
+Changing embedding models makes the old index unusable, because vectors from different models live in different spaces (often with different dimensions), so you can't query old vectors with a new model's embeddings and must re-embed and re-index everything.
+
 3. One difference you observed between Chroma and Pinecone's behavior on the same queries
+
+Pinecone is eventually consistent, so upserted vectors weren't immediately queryable and the verification script had to poll before comparing, whereas Chroma returned results right after indexing.
 
 ## Stretch Goals
 
