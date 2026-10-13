@@ -125,6 +125,7 @@ from capstone_ai.rag.retriever import DenseRetriever, SparseRetriever, HybridRet
 
 **Explain It Back:** Before proceeding, explain in your own words: Why does RRF use rank position (1/(k + rank)) rather than raw similarity scores? What problem does the constant `k` solve?
 
+Instead of comparing two search methods' confusing "scores," we just look at where each one ranks a result in its list and give extra credit when both put it near the top, and the constant `k` keeps one method's #1 pick from overpowering everything else.
 ### Part B - Reranking + Evaluation
 
 ### Step 5: Add cross-encoder reranking
